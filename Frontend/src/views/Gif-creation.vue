@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <Header msg="Welcome to Groupomania" />
-    <Formulaire msg="Welcome to Groupomania" />
-    <Footer msg="Welcome to Groupomania" />
+    <Header/>
+    <Formulaire/>
+    <Footer/>
   </div>
 </template>
 
