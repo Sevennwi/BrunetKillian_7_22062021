@@ -1,6 +1,3 @@
-// Utile ? 
-const uniqueValidator = require('mongoose-unique-validator');
-
 
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define("user", {

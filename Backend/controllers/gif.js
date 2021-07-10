@@ -1,15 +1,15 @@
-const Gif = require('../models/Gif-model');
+const Models = require('../models/');
 const fs = require('fs');
 
 
 exports.createGif = (req, res, next) => {
   const gifData = JSON.parse(req.body.gif)
   console.log(gifData)
-  const gif = new Gif({
+  Models.Gif.create({
     ...gifData,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-  });
-  gif.save().then(
+  })
+  .then(
     () => {
       res.status(201).json({
         message: 'Gif enregistrée !'
@@ -25,8 +25,8 @@ exports.createGif = (req, res, next) => {
 };
 
 exports.getOneGif = (req, res, next) => {
-  Gif.findOne({
-    _id: req.params.id
+  Models.Gif.findOne({ where: {
+    id: req.params.id }
   }).then(
     (gif) => {
       res.status(200).json(gif);
@@ -49,7 +49,7 @@ exports.modifyGif = (req, res, next) => {
 
   : { ...req.body };
   
-  Gif.updateOne({ _id: req.params.id}, {...gifData, _id: req.params.id })
+  Models.Gif.update({ id: req.params.id}, { where: {...gifData, id: req.params.id }})
   .then(
     () => {
       res.status(201).json({
@@ -66,11 +66,12 @@ exports.modifyGif = (req, res, next) => {
 };
 
 exports.deleteGif = (req, res, next) => {
-  Gif.findOne({ _id: req.params.id })
+  Models.Gif.findOne({ where: {id: req.params.id }})
     .then(gif => {
+      console.log(gif)
       const filename = gif.imageUrl.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
-        Gif.deleteOne({ _id: req.params.id })
+        Models.Gif.destroy({ where: {id: req.params.id }})
           .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
           .catch(error => res.status(400).json({ error }));
       });
@@ -79,7 +80,7 @@ exports.deleteGif = (req, res, next) => {
 };
 
 exports.getAllGifs = (req, res, next) => {
-  Gif.find().then(
+  Models.Gif.findAll().then(
     (gifs) => {
       res.status(200).json(gifs);
     }
@@ -90,53 +91,4 @@ exports.getAllGifs = (req, res, next) => {
       });
     }
   );
-};
-
-exports.likeGif = (req, res, next) => {
-
-  switch (req.body.like) {
-    case 0:                                                   
-      Gif.findOne({ _id: req.params.id })
-        .then((gif) => {
-          if (gif.usersLiked.find( user => user === req.body.userId)) {  
-            Gif.updateOne({ _id: req.params.id }, {         
-              $inc: { likes: -1 },                           
-              $pull: { usersLiked: req.body.userId }          
-            })
-              .then(() => { res.status(201).json({ message: "vote enregistré."}); })
-              .catch((error) => { res.status(400).json({error}); });
-
-          } 
-          if (gif.usersDisliked.find(user => user === req.body.userId)) { 
-            Gif.updateOne({ _id: req.params.id }, {
-              $inc: { dislikes: -1 },
-              $pull: { usersDisliked: req.body.userId }
-            })
-              .then(() => { res.status(201).json({ message: "vote enregistré." }); })
-              .catch((error) => { res.status(400).json({error}); });
-          }
-        })
-        .catch((error) => { res.status(404).json({error}); });
-      break;
-    
-    case 1:                                                 
-      Gif.updateOne({ _id: req.params.id }, {             
-        $inc: { likes: 1 },                                 
-        $push: { usersLiked: req.body.userId }              
-      })
-        .then(() => { res.status(201).json({ message: "Vous aimez le gif" }); }) 
-        .catch((error) => { res.status(400).json({ error }); });
-      break;
-    
-    case -1:                                                  
-      Gif.updateOne({ _id: req.params.id }, {               
-        $inc: { dislikes: 1 },                               
-        $push: { usersDisliked: req.body.userId }             
-      })
-        .then(() => { res.status(201).json({ message: "Vous n'aimez pas le gif" }); }) 
-        .catch((error) => { res.status(400).json({ error }); }); 
-      break;
-    default:
-      console.error("bad request");
-  }
 };

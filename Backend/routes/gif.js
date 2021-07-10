@@ -6,8 +6,6 @@ const auth = require('../middleware/auth')
 const gifCtrl = require('../controllers/gif');
 
 router.post('/', auth, multer, gifCtrl.createGif);
-
-router.post('/:id/like', auth, gifCtrl.likeGif);
   
 router.put('/:id', auth, multer, gifCtrl.modifyGif);
   

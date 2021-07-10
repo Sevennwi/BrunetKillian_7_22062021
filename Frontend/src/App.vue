@@ -17,7 +17,7 @@
 
 }())*/
 
-function fetchGif() {
+/*function fetchGif() {
 	return fetch("http://localhost:3000/api/gif/")
 	  .then(function(httpBodyResponse) {
 		return httpBodyResponse.json()
@@ -30,7 +30,7 @@ function fetchGif() {
 	  })
   }
 
-  fetchGif()
+  fetchGif()*/
 
   /*function createCard(article) {
 	

@@ -8,19 +8,7 @@ dotenv.config()
 
 const gifRoutes = require('./routes/gif');
 const userRoutes = require('./routes/user');
-
-
-const sequelize = new Sequelize('groupomania', 'Admin', 'Azerty12', {
-  host: 'localhost',
-  dialect:'mysql'
-});
-
-try {
-  sequelize.authenticate();
-  console.log('Connecté à la base de données MySQL!');
-} catch (error) {
-  console.error('Impossible de se connecter, erreur suivante :', error);
-}
+//const userLikes = require('./routes/like');
 
 
 
@@ -37,6 +25,7 @@ app.use((req, res, next) => {
 
 app.use('/images', express.static(path.join(__dirname, '/images')));
 app.use('/api/gif', gifRoutes);
-app.use('/api/auth', userRoutes);
+app.use('/api/user', userRoutes);
+//app.use('/api/like', userLikes);
 
 module.exports = app;
