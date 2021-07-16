@@ -8,7 +8,6 @@ dotenv.config()
 
 const gifRoutes = require('./routes/gif');
 const userRoutes = require('./routes/user');
-//const userLikes = require('./routes/like');
 
 
 
@@ -26,6 +25,5 @@ app.use((req, res, next) => {
 app.use('/images', express.static(path.join(__dirname, '/images')));
 app.use('/api/gif', gifRoutes);
 app.use('/api/user', userRoutes);
-//app.use('/api/like', userLikes);
 
 module.exports = app;

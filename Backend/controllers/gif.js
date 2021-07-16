@@ -1,13 +1,19 @@
 const Models = require('../models/');
 const fs = require('fs');
+const User = require('../models/User');
+const Gif = require('../models/Gif');
+const jwt = require('jsonwebtoken');
 
 
 exports.createGif = (req, res, next) => {
   const gifData = JSON.parse(req.body.gif)
-  console.log(gifData)
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+  const userId = decodedToken.userId;
   Models.Gif.create({
     ...gifData,
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+    userId
   })
   .then(
     () => {
@@ -25,7 +31,7 @@ exports.createGif = (req, res, next) => {
 };
 
 exports.getOneGif = (req, res, next) => {
-  Models.Gif.findOne({ where: {
+  Models.Gif.findOne({ include: Models.Like, where: {
     id: req.params.id }
   }).then(
     (gif) => {
@@ -49,7 +55,7 @@ exports.modifyGif = (req, res, next) => {
 
   : { ...req.body };
   
-  Models.Gif.update({ id: req.params.id}, { where: {...gifData, id: req.params.id }})
+  Models.Gif.update({ ...gifData, id: req.params.id}, { where: { id: req.params.id }})
   .then(
     () => {
       res.status(201).json({
@@ -80,7 +86,7 @@ exports.deleteGif = (req, res, next) => {
 };
 
 exports.getAllGifs = (req, res, next) => {
-  Models.Gif.findAll().then(
+  Models.Gif.findAll({ include: Models.Like }).then(
     (gifs) => {
       res.status(200).json(gifs);
     }
@@ -92,3 +98,4 @@ exports.getAllGifs = (req, res, next) => {
     }
   );
 };
+

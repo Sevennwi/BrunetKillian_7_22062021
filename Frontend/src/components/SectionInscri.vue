@@ -1,20 +1,19 @@
 <template>
     <section>
         <article>
-
-            <form action="index.html">
+            <form @submit="loginFetch()" id="inscriForm">
                 <p>Inscription</p>
                     <div class="row">
                         <label for="Name">Pseudo</label>
-                        <input type="text" id="Name" placeholder="Pseudo">
+                        <input type="text" id="Name" placeholder="Pseudo" v-model="dataSignup.email">
                     </div>
                     <div class="row">
                         <label for="pass">Mot de passe</label>
-                        <input type="password" id="pass" placeholder="Mot de passe">
+                        <input type="password" id="pass" placeholder="Mot de passe" v-model="dataSignup.password">
                     </div>
 
                 <div>
-                    <button type="submit" class="btn" onsubmit="return false">Bienvenue dans l'entreprise</button>
+                    <button type="submit" class="btn" id="btn">Bienvenue dans l'entreprise</button>
                 </div>
 
             </form>
@@ -25,12 +24,47 @@
 </template>
 
 <script>
+//import Vue from "vue";
 export default {
   name: "SectionInscri",
-  props: {
-    msg: String,
-  },
+    data: function() {
+        return {
+            dataSignup: {
+               email: null,
+               password: null 
+            },
+             msg: ""
+        }
+    },
+
+   methods: {
+
+        loginFetch: function () { 
+        console.log(this.dataSignup)
+        fetch('http://localhost:3000/api/user/signup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.dataSignup),
+        })
+        .then((response) => response.json())
+        //Then with the data from the response in JSON...
+        .then((user) => {
+        //location.replace(location.href('Connexion.html')) ????????????
+        console.log('Success:', user);
+        })
+        //Then with the error genereted...
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+        }
+    }
 };
+
+
+
+
 </script>
 
 <style lang="scss">

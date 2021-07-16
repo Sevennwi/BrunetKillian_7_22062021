@@ -1,6 +1,6 @@
 
 module.exports = (sequelize, Sequelize) => {
-    const Gif = sequelize.define("Gif", {
+    const Gif = sequelize.define("gif", {
       title: {
         type: Sequelize.STRING
     },

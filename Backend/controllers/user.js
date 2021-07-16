@@ -34,9 +34,9 @@ exports.login = (req, res, next) => {
               return res.status(401).json({ error: 'Mot de passe incorrect !' });
             }
             res.status(200).json({
-              userId: user._id,
+              userId: user.id,
               token: jwt.sign(
-                { userId: user._id },
+                { userId: user.id },
                 'RANDOM_TOKEN_SECRET',
                 { expiresIn: '24h' }
               )
@@ -50,7 +50,7 @@ exports.login = (req, res, next) => {
 
 
   exports.modifyUser = (req, res, next) => {
-    Models.User.update({ id: req.params.id}, { where: {...req.body, id: req.params.id }})
+    Models.User.update({ ...req.body, id: req.params.id}, { where: { id: req.params.id }})
     .then(
       () => {
         res.status(201).json({
@@ -74,7 +74,7 @@ exports.login = (req, res, next) => {
 
 
   exports.getOneUser = (req, res, next) => {
-    Models.User.findOne({ where: {
+    Models.User.findOne({ include: Models.Gif, where: {
       id: req.params.id }
     }).then(
       (gif) => {
@@ -90,7 +90,7 @@ exports.login = (req, res, next) => {
   };
 
   exports.getAllUsers = (req, res, next) => {
-    Models.User.findAll().then(
+    Models.User.findAll({ include: Models.Gif }).then(
       (users) => {
         res.status(200).json(users);
       }

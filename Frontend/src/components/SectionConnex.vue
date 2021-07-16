@@ -2,19 +2,19 @@
     <section>
         <article>
 
-            <form action="index.html">
+            <form @submit="loginFetch()">
                 <p>Connexion</p>
                     <div class="row">
                         <label for="Name">Pseudo</label>
-                        <input type="text" id="Name" placeholder="Pseudo">
+                        <input type="text" id="Name" placeholder="Pseudo" v-model="dataLogin.email">
                     </div>
                     <div class="row">
                         <label for="pass">Mot de passe</label>
-                        <input type="password" id="pass" placeholder="Mot de passe">
+                        <input type="password" id="pass" placeholder="Mot de passe" v-model="dataLogin.password">
                     </div>
 
                 <div>
-                    <button type="submit" class="btn" onsubmit="return false">Entrer dans la matrice</button>
+                    <button type="submit" class="btn">Entrer dans la matrice</button>
                 </div>
 
             </form>
@@ -27,10 +27,42 @@
 <script>
 export default {
   name: "SectionConnex",
-  props: {
-    msg: String,
-  },
+    data: function() {
+        return {
+            dataLogin: {
+               email: null,
+               password: null 
+            },
+             msg: ""
+        }
+    },
+
+   methods: {
+
+        loginFetch: function () { 
+        console.log(this.dataLogin)
+        fetch('http://localhost:3000/api/user/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.dataLogin),
+        })
+        .then((response) => response.json())
+        //Then with the data from the response in JSON...
+        .then((user) => {
+        localStorage.setItem('token', user.token)
+        location.replace(location.origin)
+        console.log('Success:', user);
+        })
+        //Then with the error genereted...
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+        }
+    }
 };
+
 </script>
 
 <style lang="scss">

@@ -20,7 +20,9 @@ export default {
     Header,
     Section,
     Footer,
-  },
+  }, created() {
+    
+  }
 };
 </script>
 
