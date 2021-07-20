@@ -75,7 +75,7 @@ section {
 }
 
 article {
-    background-color: rgba($color: #FFD9D9, $alpha: 1);
+    background-color: rgba($color: #C6E5D9, $alpha: 1);
     width: 50%;
     margin: 0 auto;
     padding: 20px 0px;
@@ -116,7 +116,7 @@ form {
         font-size: 20px;
         transition: background-color 0.3s ease-in-out;
         &:hover {
-            background-color: #B38686;
+            background-color: #FF3D7F;
             color: white;
         }
     }

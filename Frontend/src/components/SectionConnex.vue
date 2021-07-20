@@ -50,10 +50,13 @@ export default {
         })
         .then((response) => response.json())
         //Then with the data from the response in JSON...
-        .then((user) => {
-        localStorage.setItem('token', user.token)
-        location.replace(location.origin)
-        console.log('Success:', user);
+        .then((response) => {
+        if (response.token !== undefined) {
+                localStorage.setItem('token', response.token)
+                localStorage.setItem('userId', response.userId)
+                location.replace(location.origin)
+                console.log('Success:', response);
+        }
         })
         //Then with the error genereted...
         .catch((error) => {
@@ -73,7 +76,7 @@ section {
 }
 
 article {
-    background-color: rgba($color: #FFD9D9, $alpha: 1);
+    background-color: rgba($color: #C6E5D9, $alpha: 1);
     width: 50%;
     margin: 0 auto;
     padding: 20px 0px;
@@ -114,7 +117,7 @@ form {
         font-size: 20px;
         transition: background-color 0.3s ease-in-out;
         &:hover {
-            background-color: #B38686;
+            background-color: #FF3D7F;
             color: white;
         }
     }

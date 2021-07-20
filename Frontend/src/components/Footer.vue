@@ -47,7 +47,7 @@ export default {
     footer {
         display: flex;
         justify-content: space-around;
-        background-color: #B38686;
+        background-color: #3FB8AF;
         padding-bottom: 10px;
         flex-grow: 0;
         flex-shrink: 0;
@@ -55,7 +55,7 @@ export default {
         .text-center {
             text-align: center;
             font-size: 1.3em;
-            color: #f2f2f2;
+            color: white;
 
         }
         .row {
@@ -66,9 +66,9 @@ export default {
                 .social {
                     font-size: 2em;
                     padding: 10px 20px;
-                    color: #f2f2f2;
+                    color: white;
                     &:hover {
-                            color: #FFD9D9;
+                            color: rgba($color: #FF3D7F, $alpha: 0.8);
                     }
                 }
             }

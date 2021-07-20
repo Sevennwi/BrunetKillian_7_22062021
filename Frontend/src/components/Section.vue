@@ -4,9 +4,10 @@
             <div>
                 <p>Test</p>
                 <button @click="gifFetch()">Click</button>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea aliquid at error consequatur libero commodi odit! Fugiat obcaecati ipsum, eligendi libero expedita maxime, ullam illum quidem veritatis, doloribus aperiam enim.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea aliquid at error consequatur libero commodi odit! Fugiat obcaecati ipsum, eligendi libero expedita maxime, ullam illum quidem veritatis, doloribus aperiam enim.</p>
-
+                <!-- Faire la carte ici -->
+                <div v-for="gif in Gifs" :key="gif.id">
+                    test {{ gif.id }}  {{ gif.title }}
+                </div>
             </div>
         </article>
     </section>
@@ -17,6 +18,16 @@
 export default {
   name: "Section",
 
+      data: function() {
+        return {
+            Gifs: [],
+        }
+    },
+    created() {
+        this.gifFetch()
+    },
+
+
    methods: {
         gifFetch: function () { 
         fetch('http://localhost:3000/api/gif', {
@@ -26,6 +37,9 @@ export default {
             'Content-Type': 'application/json',
         }})
         .then((response) => response.json())
+        .then((response) => {
+            this.Gifs = response
+        })
         //Then with the error genereted...
         .catch((error) => {
         console.error('Error:', error);
@@ -46,7 +60,7 @@ section {
 }
 
 article {
-    background-color: rgba($color: #FFD9D9, $alpha: 1);
+    background-color: rgba($color: #C6E5D9, $alpha: 1);
     width: 50%;
     margin: 0 auto;
     padding: 20px 0px;

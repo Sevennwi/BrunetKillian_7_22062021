@@ -2,23 +2,23 @@
     <section>
         <article>
 
-            <form action="index.html">
+            <form @submit.prevent="gifCreateFetch()">  <!-- action="index.html"-->
                 <p>Créateur de Gif</p>
                     <div class="row">
                         <label for="Name">Nom du Gif</label>
-                        <input type="text" id="Name" placeholder="Nom du Gif">
+                        <input type="text" id="Name" placeholder="Nom du Gif" v-model="dataGifCreate.title">
                     </div>
                     <div class="row">
                         <label for="Description">Description du Gif</label>
-                        <input type="text" id="Description" placeholder="Description du Gif">
+                        <input type="text" id="Description" placeholder="Description du Gif" v-model="dataGifCreate.description">
                     </div>
                     <div class="row">
                         <label for="Image">Gif</label>
-                        <input type="file" id="Image" placeholder="Gif" accept="image/png, image/jpeg">
+                        <input type="file" id="Image" placeholder="Gif">
                     </div>
 
                 <div>
-                    <button type="submit" class="btn" onsubmit="return false">Création</button>
+                    <button type="submit" class="btn">Création</button>
                 </div>
 
             </form>
@@ -31,10 +31,51 @@
 <script>
 export default {
   name: "Formulaire",
-  props: {
-    msg: String,
-  },
+    data: function() {
+        return {
+            dataGifCreate: {
+               title: null,
+               description: null, 
+               imageUrl: null 
+            },
+             msg: ""
+        }
+    },
+
+   methods: {
+
+        gifCreateFetch: function () { 
+        const image = document.getElementById('Image').files[0]
+        console.log(image)
+        const gifData = new FormData();
+        gifData.append("image", image);
+        gifData.append("gif", JSON.stringify({
+            title: this.dataGifCreate.title,
+            description: this.dataGifCreate.description,
+        }))
+        console.log(gifData)
+        fetch('http://localhost:3000/api/gif', {
+        method: 'POST',
+        headers: {
+            authorization: "Bearer " + localStorage.getItem('token'),
+        },
+        body: gifData,
+        })
+        .then((response) => response.json())
+        //Then with the data from the response in JSON...
+        .then((gif) => {
+        console.log('Success:', gif);
+        })
+        //Then with the error genereted...
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+        },
+
+    }
 };
+
+
 </script>
 
 <style lang="scss">
@@ -45,7 +86,7 @@ section {
 }
 
 article {
-    background-color: rgba($color: #FFD9D9, $alpha: 1);
+    background-color: rgba($color: #C6E5D9, $alpha: 1);
     width: 50%;
     margin: 0 auto;
     padding: 20px 0px;
@@ -86,7 +127,7 @@ form {
         font-size: 20px;
         transition: background-color 0.3s ease-in-out;
         &:hover {
-            background-color: #B38686;
+            background-color: #FF3D7F;
             color: white;
         }
     }

@@ -29,7 +29,7 @@ export default {
 }
 
 header {
-    background-color: rgba($color: #B38686, $alpha: 1);
+    background-color: rgba($color: #3FB8AF, $alpha: 1);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -55,10 +55,10 @@ li {
     font-size: 1.2em;
 
     a {
-        color: #f2f2f2;
+        color: white;
         text-decoration: none;
         &:hover {
-            color: #FFD9D9;
+            color: lighten($color: #FF3D7F, $amount: 10%);
         }
     }
 }
