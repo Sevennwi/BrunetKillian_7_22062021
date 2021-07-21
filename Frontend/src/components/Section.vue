@@ -1,12 +1,23 @@
 <template>
     <section>
         <article id="card-container">
-            <div>
-                <p>Test</p>
-                <button @click="gifFetch()">Click</button>
                 <!-- Faire la carte ici -->
-                <div v-for="gif in Gifs" :key="gif.id">
-                    test {{ gif.id }}  {{ gif.title }}
+            <div v-for="gif in Gifs" :key="gif.id" class="card">
+                <router-link to="/gif-modification" class="cardBody">
+                    <div class="userName">
+                        <p>{{gif.user.email}}</p>
+                    </div>
+                    <div class="gif">
+                        <h2>{{ gif.title }}</h2>
+                        <img :src="gif.imageUrl" alt="Gif">
+                        <p>{{gif.description}}</p>
+                    </div>
+
+                </router-link>
+
+                <div class="like">
+                    <button><i class="fas fa-arrow-up"></i></button>
+                    <button><i class="fas fa-arrow-down"></i></button>
                 </div>
             </div>
         </article>
@@ -39,6 +50,7 @@ export default {
         .then((response) => response.json())
         .then((response) => {
             this.Gifs = response
+            //console.log(response)
         })
         //Then with the error genereted...
         .catch((error) => {
@@ -65,6 +77,62 @@ article {
     margin: 0 auto;
     padding: 20px 0px;
     z-index: 1;
+    .card {
+        display: block;
+        text-align: center;
+        width: 40%;
+        margin: 0 auto 60px;
+        padding: 5px 0px 10px;
+        background-color: lighten($color: #C6E5D9, $amount: 8%);
+        border-radius: 5%;
+
+        .cardBody {
+        text-decoration: none;
+        color: black;
+
+            .userName {
+            text-align: left;
+            margin: 0px 10px -15px;
+            color: grey;
+            font-size: 0.8em;
+            }
+
+            .gif {
+            margin: 0px 0px 10px;
+                h2 {
+                    font-size: 1.3em;
+                }
+                img {
+                    max-width: 90%;
+                    height: auto;
+                }
+            }
+
+        }
+
+        .like {
+            button:first-child {
+                &:hover {
+                    color: #FF3D7F;
+                    cursor: pointer;
+                    border-color: #FF3D7F;
+                }
+            }
+            button {
+                border: 2px solid black;
+                border-radius: 30%;
+                outline: none;
+                margin: 0 20px;
+                font-size: 1.3em;
+                background-color: lighten($color: #C6E5D9, $amount: 8%);
+                &:hover {
+                    color: #3FB8AF;
+                    cursor: pointer;
+                    border-color: #3FB8AF;
+                }
+            }
+        }
+    }
 }
 
 

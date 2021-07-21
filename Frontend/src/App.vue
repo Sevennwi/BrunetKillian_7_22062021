@@ -5,7 +5,10 @@
 </template>
 
 <script>
-
+var canvas = document.getElementById('particles-js');
+var app = document.getElementById('app');
+console.log(canvas.height)
+canvas.height = app.height;
 
 </script>
 

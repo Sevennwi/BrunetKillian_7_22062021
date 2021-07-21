@@ -2,8 +2,8 @@
     <section>
         <article>
 
-            <form @submit="gifCreateFetch()">  <!-- action="index.html"-->
-                <p>Créateur de Gif</p>
+            <form @submit="gifModifFetch()">  <!-- action="index.html"-->
+                <p>Modification du gif</p>
                     <div class="row">
                         <label for="Name">Nom du Gif</label>
                         <input type="text" id="Name" placeholder="Nom du Gif" v-model="dataGifCreate.title">
@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  name: "Formulaire",
+  name: "FormulaireModif",
     data: function() {
         return {
             dataGifCreate: {

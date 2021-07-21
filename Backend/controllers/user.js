@@ -77,8 +77,8 @@ exports.login = (req, res, next) => {
     Models.User.findOne({ include: Models.Gif, where: {
       id: req.params.id }
     }).then(
-      (gif) => {
-        res.status(200).json(gif);
+      (user) => {
+        res.status(200).json(user);
       }
     ).catch(
       (error) => {

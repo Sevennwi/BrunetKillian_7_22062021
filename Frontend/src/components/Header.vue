@@ -1,7 +1,7 @@
 <template>
     <header>
         <div>
-            <router-link to="/"><img src="../assets/Logo/icon-left-font-monochrome-white.png" alt="Logo"></router-link>
+            <router-link to="/"><img src="../assets/Logo/icon-left-font-monochrome-white.png" alt="Logo" id="logo"></router-link>
         </div>
 
         <nav>
@@ -61,7 +61,7 @@ li {
 }
 
 
-img {
+#logo {
     width: 150px;
     height: auto;
     &:hover {

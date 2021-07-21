@@ -13,7 +13,7 @@ exports.createGif = (req, res, next) => {
   Models.Gif.create({
     ...gifData,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-    userId
+    userId,
   })
   .then(
     () => {
@@ -86,7 +86,7 @@ exports.deleteGif = (req, res, next) => {
 };
 
 exports.getAllGifs = (req, res, next) => {
-  Models.Gif.findAll({ include: Models.Like }).then(
+  Models.Gif.findAll({ include: [ {model:Models.Like}, {model:Models.User, attributes: ['email']} ] }).then(
     (gifs) => {
       res.status(200).json(gifs);
     }
