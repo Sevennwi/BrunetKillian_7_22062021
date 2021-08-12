@@ -1,9 +1,14 @@
 <template>
     <section>
         <article id="card-container">
+
+            <div class="empty" v-if="Gifs.length === 0">
+                <img src="../assets/giphy.gif" alt="Pulp Fiction">
+                <h2>Pas de Gif disponible !</h2>
+            </div>
                 <!-- Faire la carte ici -->
             <div v-for="gif in Gifs" :key="gif.id" class="card">
-                <router-link to="/gif-modification" class="cardBody">
+                <router-link :to="'/gif-modification?id='+ gif.id" class="cardBody" @:click="tokenGif()">
                     <div class="userName">
                         <p>{{gif.user.email}}</p>
                     </div>
@@ -12,13 +17,7 @@
                         <img :src="gif.imageUrl" alt="Gif">
                         <p>{{gif.description}}</p>
                     </div>
-
                 </router-link>
-
-                <div class="like">
-                    <button><i class="fas fa-arrow-up"></i></button>
-                    <button><i class="fas fa-arrow-down"></i></button>
-                </div>
             </div>
         </article>
     </section>
@@ -50,6 +49,7 @@ export default {
         .then((response) => response.json())
         .then((response) => {
             this.Gifs = response
+            //const gifId = this.Gifs.id
             //console.log(response)
         })
         //Then with the error genereted...
@@ -77,6 +77,19 @@ article {
     margin: 0 auto;
     padding: 20px 0px;
     z-index: 1;
+    .empty {
+        display: flex;
+        flex-direction: column;
+        img {
+            max-width: 500px;
+            margin: 40px auto;
+            border-radius: 2%;
+        }
+        h2 {
+            margin: 10px auto;
+            color: black;
+        }
+    }
     .card {
         display: block;
         text-align: center;
@@ -105,6 +118,7 @@ article {
                 img {
                     max-width: 90%;
                     height: auto;
+                    border-radius: 2%;
                 }
             }
 
@@ -113,9 +127,9 @@ article {
         .like {
             button:first-child {
                 &:hover {
-                    color: #FF3D7F;
+                    color: #3FB8AF;
                     cursor: pointer;
-                    border-color: #FF3D7F;
+                    border-color: #3FB8AF;
                 }
             }
             button {
@@ -126,9 +140,9 @@ article {
                 font-size: 1.3em;
                 background-color: lighten($color: #C6E5D9, $amount: 8%);
                 &:hover {
-                    color: #3FB8AF;
+                    color: #FF3D7F;
                     cursor: pointer;
-                    border-color: #3FB8AF;
+                    border-color: #FF3D7F;
                 }
             }
         }

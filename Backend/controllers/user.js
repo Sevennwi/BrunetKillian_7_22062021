@@ -50,20 +50,23 @@ exports.login = (req, res, next) => {
 
 
   exports.modifyUser = (req, res, next) => {
-    Models.User.update({ ...req.body, id: req.params.id}, { where: { id: req.params.id }})
-    .then(
-      () => {
-        res.status(201).json({
-          message: 'Utilisateur modifiée !'
-        });
-      }
-    ).catch(
-      (error) => {
-        res.status(400).json({
-          error: error
-        });
-      }
-    );
+    bcrypt.hash(req.body.password, 10)
+    .then(hash => {
+      Models.User.update({ email: req.body.email, password: hash , id: req.params.id}, { where: { id: req.params.id }})
+      .then(
+        () => {
+          res.status(201).json({
+            message: 'Utilisateur modifiée !'
+          });
+        }
+      ).catch(
+        (error) => {
+          res.status(400).json({
+            error: error
+          });
+        }
+      );
+    })
   };
   
   exports.deleteUser = (req, res, next) => {

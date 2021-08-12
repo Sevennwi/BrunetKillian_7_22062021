@@ -4,7 +4,7 @@ const multer = require('../middleware/multer-config')
 const auth = require('../middleware/auth')
 
 const gifCtrl = require('../controllers/gif');
-const likeCtrl = require('../controllers/like')
+const reactionCtrl = require('../controllers/reaction')
 
 router.post('/', auth, multer, gifCtrl.createGif);
   
@@ -16,10 +16,10 @@ router.get('/:id', auth, gifCtrl.getOneGif);
   
 router.get('/', auth, gifCtrl.getAllGifs);
 
-router.post('/:id/like', auth, multer, likeCtrl.createLikeGif);
+router.post('/:id/reaction', auth, multer, reactionCtrl.createReactionGif);
 
-router.delete('/:id/like', auth, likeCtrl.deleteLikeGif);
+router.delete('/:id/reaction', auth, reactionCtrl.deleteReactionGif);
 
-router.get('/like', auth, likeCtrl.getAllLikes);
+router.get('/reaction', auth, reactionCtrl.getAllReactions);
 
 module.exports = router;

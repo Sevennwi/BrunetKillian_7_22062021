@@ -2,7 +2,7 @@
     <section>
         <article>
 
-            <form @submit="loginFetch()">
+            <form @submit.prevent.stop="loginFetch()">
                 <p>Connexion</p>
                     <div class="row">
                         <label for="Name">Pseudo</label>

@@ -48,7 +48,7 @@ export default {
 
         userModifyFetch: function () { 
         console.log(this.dataUpdate)
-        fetch('http://localhost:3000/api/user/2', {
+        fetch('http://localhost:3000/api/user/' + localStorage.getItem('userId'), {
         method: 'PUT',
         headers: {
             authorization: "Bearer " + localStorage.getItem('token'),
@@ -83,7 +83,7 @@ export default {
         //Then with the data from the response in JSON...
         .then((user) => {
         console.log('Success:', user);
-        localStorage.removeItem('token')
+        localStorage.clear()
         window.location.reload()
         })
         //Then with the error genereted...

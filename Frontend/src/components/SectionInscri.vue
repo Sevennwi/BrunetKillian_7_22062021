@@ -1,7 +1,7 @@
 <template>
     <section>
         <article>
-            <form @submit="loginFetch()" id="inscriForm">
+            <form @submit.prevent.stop="loginFetch()" id="inscriForm">
                 <p>Inscription</p>
                     <div class="row">
                         <label for="Name">Pseudo</label>

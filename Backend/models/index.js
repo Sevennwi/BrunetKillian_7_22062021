@@ -1,7 +1,7 @@
 
 const Sequelize = require("sequelize");
 const { getAllGifs } = require("../controllers/gif.js");
-const Like = require("./Like.js");
+const Reaction = require("./Reaction.js");
 const sequelize = new Sequelize('groupomania', 'Admin', 'Azerty12', {
   host: 'localhost',
   dialect:'mysql'
@@ -21,16 +21,16 @@ db.sequelize = sequelize;
 
 db.User = require("./User.js")(sequelize, Sequelize);
 db.Gif = require("./Gif.js")(sequelize, Sequelize);
-db.Like = require("./Like.js")(sequelize, Sequelize);
+db.Reaction = require("./Reaction.js")(sequelize, Sequelize);
 
 db.User.hasMany(db.Gif)
 db.Gif.belongsTo(db.User)
 
-db.User.hasMany(db.Like)
-db.Like.belongsTo(db.User)
+db.User.hasMany(db.Reaction)
+db.Reaction.belongsTo(db.User)
 
-db.Gif.hasMany(db.Like)
-db.Like.belongsTo(db.Gif)
+db.Gif.hasMany(db.Reaction)
+db.Reaction.belongsTo(db.Gif)
 
 
 

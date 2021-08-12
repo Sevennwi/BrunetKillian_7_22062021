@@ -2,7 +2,7 @@
     <section>
         <article>
 
-            <form @submit="gifCreateFetch()">  <!-- action="index.html"-->
+            <form @submit="gifCreateFetch()" onsubmit="return false">  <!-- action="index.html"-->
                 <p>Créateur de Gif</p>
                     <div class="row">
                         <label for="Name">Nom du Gif</label>
@@ -65,7 +65,7 @@ export default {
         //Then with the data from the response in JSON...
         .then((gif) => {
         console.log('Success:', gif);
-        //location.replace(location.origin)
+        location.replace(location.origin)
         })
         //Then with the error genereted...
         .catch((error) => {
