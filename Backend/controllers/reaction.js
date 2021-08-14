@@ -27,7 +27,7 @@ exports.createReactionGif = (req, res, next) => {
     const userId = decodedToken.userId;
     Models.Reaction.destroy({ where: {
       userId,
-      gifId: req.params.id }
+      id: req.params.id }
     })
     .then(() => res.status(200).json({ message: 'Reaction supprimé !'}))
     .catch(

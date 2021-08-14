@@ -1,8 +1,10 @@
-
+require('dotenv').config();
 const Sequelize = require("sequelize");
 const { getAllGifs } = require("../controllers/gif.js");
 const Reaction = require("./Reaction.js");
-const sequelize = new Sequelize('groupomania', 'Admin', 'Azerty12', {
+const { DB_Name, DB_User, DB_Password } = process.env;
+
+const sequelize = new Sequelize( DB_Name, DB_User, DB_Password, {
   host: 'localhost',
   dialect:'mysql'
 });

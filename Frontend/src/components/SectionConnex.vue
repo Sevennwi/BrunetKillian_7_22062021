@@ -6,7 +6,7 @@
                 <p>Connexion</p>
                     <div class="row">
                         <label for="Name">Pseudo</label>
-                        <input type="text" id="Name" placeholder="Pseudo" v-model="dataLogin.email">
+                        <input type="text" id="Name" placeholder="Pseudo" pattern="[a-zA-Z0-9]+" maxlength="15" v-model="dataLogin.email">
                     </div>
                     <div class="row">
                         <label for="pass">Mot de passe</label>

@@ -5,7 +5,7 @@
                 <p>Profil Utilisateur</p>
                     <div class="row">
                         <label for="Name">Pseudo</label>
-                        <input type="text" id="Name" placeholder="Pseudo" v-model="dataUpdate.email">
+                        <input type="text" id="Name" placeholder="Pseudo" pattern="[a-zA-Z0-9]+" maxlength="15" v-model="dataUpdate.email">
                     </div>
                     <div class="row">
                         <label for="pass">Mot de passe</label>
@@ -13,17 +13,14 @@
                     </div>
 
                 <div>
-                    <button type="submit" class="btn" id="btn">Mise à jour</button>
+                    <button type="submit" class="btn">Mise à jour</button>
                 </div>
 
             </form>
 
-            <div>
-                <button type="submit" class="btn" id="btnDeco" @click="userDeco()">Déconnexion</button>
-            </div>
-
-            <div>
-                <button type="submit" class="btn" id="btnDelete" @click="userDelete()">Suppression du compte</button>
+            <div class="DecoDelete">
+                <button type="submit" class="btn" @click="userDeco()">Déconnexion</button>
+                <button type="submit" class="btn" @click="userDelete()">Suppression du compte</button>
             </div>
 
         </article>
@@ -139,7 +136,7 @@ form {
         outline: none;
         border: 1px solid #333;
         border-radius: 10px;
-        margin: 10px 0px;
+        margin: 30px 0px 10px;
         padding: 10px 20px;
         cursor: pointer;
         font-size: 20px;
@@ -151,13 +148,17 @@ form {
     }
 }
 
-#btnDeco {
+.DecoDelete{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    .btn {
        	border: none;
         outline: none;
         display: flex;
         border: 1px solid #333;
         border-radius: 10px;
-        margin: 60px auto;
+        margin: 60px 30px 0px;
         padding: 10px 20px;
         cursor: pointer;
         font-size: 20px;
@@ -166,23 +167,8 @@ form {
             background-color: #FF3D7F;
             color: white;
         }
+    }
 }
 
-#btnDelete {
-       	border: none;
-        outline: none;
-        display: flex;
-        border: 1px solid #333;
-        border-radius: 10px;
-        margin: 60px auto;
-        padding: 10px 20px;
-        cursor: pointer;
-        font-size: 20px;
-        transition: background-color 0.3s ease-in-out;
-        &:hover {
-            background-color: #FF3D7F;
-            color: white;
-        }
-}
 
 </style>

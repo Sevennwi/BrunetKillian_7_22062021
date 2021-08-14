@@ -5,7 +5,7 @@
                 <p>Inscription</p>
                     <div class="row">
                         <label for="Name">Pseudo</label>
-                        <input type="text" id="Name" placeholder="Pseudo" v-model="dataSignup.email">
+                        <input type="text" id="Name" placeholder="Pseudo" pattern="[a-zA-Z0-9]+" maxlength="15" v-model="dataSignup.email">
                     </div>
                     <div class="row">
                         <label for="pass">Mot de passe</label>

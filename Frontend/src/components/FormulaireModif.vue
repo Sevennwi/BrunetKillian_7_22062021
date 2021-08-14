@@ -18,7 +18,9 @@
 
                 <div class="like">  <!-- Faire 4 boutons create destroy-->
                     <button @:click="likeGif()"><i class="fas fa-arrow-up"></i></button>
+                    <button @:click="deleteLikeGif()"><i class="fas fa-arrow-up"></i></button>
                     <button @:click="dislikeGif()"><i class="fas fa-arrow-down"></i></button>
+                    <button @:click="DeletedislikeGif()"><i class="fas fa-arrow-down"></i></button>
                 </div>
             </div>
 
@@ -28,11 +30,11 @@
                     <p>Modificateur de Gif</p>
                         <div class="row">
                             <label for="Name">Nouveau nom du Gif</label>
-                            <input type="text" id="Name" placeholder="Nom du Gif" v-model="gif.title">
+                            <input type="text" id="Name" placeholder="Nom du Gif" pattern="[a-zA-Z0-9- ]+" maxlength="20" v-model="gif.title">
                         </div>
                         <div class="row">
                             <label for="Description">Nouvelle description du Gif</label>
-                            <input type="text" id="Description" placeholder="Description du Gif" v-model="gif.description">
+                            <input type="text" id="Description" placeholder="Description du Gif" pattern="[a-zA-Z0-9- ]+" maxlength="30" v-model="gif.description">
                         </div>
                         <div class="row">
                             <label for="Image">Nouveau Gif</label>
@@ -171,7 +173,50 @@ export default {
         });
         },
 
+        deleteLikeGif: function () { 
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const id = urlParams.get('id')
+        fetch('http://localhost:3000/api/gif/'+ id +"/reaction", {
+        method: 'DELETE',
+        headers: {
+            authorization: "Bearer " + localStorage.getItem('token'),
+            'Content-Type': 'application/json',
+        }})
+        .then((response) => response.json())
+        .then((response) => {
+            console.log("Like supprimé", response)
+        })
+        //Then with the error genereted...
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+        },
+
         dislikeGif: function () { 
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const id = urlParams.get('id')
+        fetch('http://localhost:3000/api/gif/'+ id +"/reaction", {
+        method: 'POST',
+        headers: {
+            authorization: "Bearer " + localStorage.getItem('token'),
+            'Content-Type': 'application/json',
+        }, body: {
+            type: 'dislike'
+        }
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            console.log("Gif liké", response)
+        })
+        //Then with the error genereted...
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+        },
+
+        DeletedislikeGif: function () { 
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const id = urlParams.get('id')
@@ -240,7 +285,7 @@ form {
         outline: none;
         border: 1px solid #333;
         border-radius: 10px;
-        margin: 10px 0px;
+        margin: 30px 0px 10px;
         padding: 10px 20px;
         cursor: pointer;
         font-size: 20px;

@@ -18,7 +18,7 @@ router.get('/', auth, gifCtrl.getAllGifs);
 
 router.post('/:id/reaction', auth, multer, reactionCtrl.createReactionGif);
 
-router.delete('/:id/reaction', auth, reactionCtrl.deleteReactionGif);
+router.delete('/:id/reaction/:id', auth, reactionCtrl.deleteReactionGif);
 
 router.get('/reaction', auth, reactionCtrl.getAllReactions);
 

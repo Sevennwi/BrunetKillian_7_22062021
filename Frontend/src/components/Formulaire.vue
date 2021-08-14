@@ -6,11 +6,11 @@
                 <p>Créateur de Gif</p>
                     <div class="row">
                         <label for="Name">Nom du Gif</label>
-                        <input type="text" id="Name" placeholder="Nom du Gif" v-model="dataGifCreate.title">
+                        <input type="text" id="Name" placeholder="Nom du Gif" pattern="[a-zA-Z0-9- ]+" maxlength="20" v-model="dataGifCreate.title">
                     </div>
                     <div class="row">
                         <label for="Description">Description du Gif</label>
-                        <input type="text" id="Description" placeholder="Description du Gif" v-model="dataGifCreate.description">
+                        <input type="text" id="Description" placeholder="Description du Gif" pattern="[a-zA-Z0-9- ]+" maxlength="30" v-model="dataGifCreate.description">
                     </div>
                     <div class="row">
                         <label for="Image">Gif</label>
@@ -122,7 +122,7 @@ form {
         outline: none;
         border: 1px solid #333;
         border-radius: 10px;
-        margin: 10px 0px;
+        margin: 30px 0px 10px;
         padding: 10px 20px;
         cursor: pointer;
         font-size: 20px;
