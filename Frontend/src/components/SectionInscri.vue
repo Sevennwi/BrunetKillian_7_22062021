@@ -51,7 +51,7 @@ export default {
         .then((response) => response.json())
         //Then with the data from the response in JSON...
         .then((user) => {
-        //location.replace(location.href('Connexion.html')) ????????????
+        window.location.href = 'connexion';
         console.log('Success:', user);
         })
         //Then with the error genereted...

@@ -123,29 +123,6 @@ article {
             }
 
         }
-
-        .like {
-            button:first-child {
-                &:hover {
-                    color: #3FB8AF;
-                    cursor: pointer;
-                    border-color: #3FB8AF;
-                }
-            }
-            button {
-                border: 2px solid black;
-                border-radius: 30%;
-                outline: none;
-                margin: 0 20px;
-                font-size: 1.3em;
-                background-color: lighten($color: #C6E5D9, $amount: 8%);
-                &:hover {
-                    color: #FF3D7F;
-                    cursor: pointer;
-                    border-color: #FF3D7F;
-                }
-            }
-        }
     }
 }
 

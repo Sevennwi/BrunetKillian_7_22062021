@@ -16,11 +16,11 @@
                 </router-link>
 
 
-                <div class="like">  <!-- Faire 4 boutons create destroy-->
-                    <button @:click="likeGif()"><i class="fas fa-arrow-up"></i></button>
-                    <button @:click="deleteLikeGif()"><i class="fas fa-arrow-up"></i></button>
-                    <button @:click="dislikeGif()"><i class="fas fa-arrow-down"></i></button>
-                    <button @:click="DeletedislikeGif()"><i class="fas fa-arrow-down"></i></button>
+                <div>  <!-- Faire 4 boutons create destroy-->
+                    <button v-if="!hasLiked" @click.prevent.stop="likeGif()" class="like"><i class="fas fa-arrow-up"></i></button>
+                    <button v-if="hasLiked" @click.prevent.stop="deleteLikeGif()" class="like active"><i class="fas fa-arrow-up"></i></button>
+                    <button v-if="!hasDisliked" @click.prevent.stop="dislikeGif()" class="dislike"><i class="fas fa-arrow-down"></i></button>
+                    <button v-if="hasDisliked" @click.prevent.stop="deleteDislikeGif()" class="dislike active"><i class="fas fa-arrow-down"></i></button>
                 </div>
             </div>
 
@@ -71,6 +71,26 @@ export default {
         this.gifCreateFetch()
     },
 
+    computed: {
+        hasLiked: function() {
+            for (let reaction of this.gif.reactions) {
+                if (this.userLogin == reaction.userId && reaction.type == "like") {
+                    return true
+                }
+            } 
+            return false
+        },
+
+        hasDisliked: function() {
+            for (let reaction of this.gif.reactions) {
+                if (this.userLogin == reaction.userId && reaction.type == "dislike") {
+                    return true
+                }
+            } 
+            return false
+        }
+    },
+
    methods: {
 
         gifCreateFetch: function () { 
@@ -88,7 +108,6 @@ export default {
         .then((response) => {
         this.gif = response
         console.log('Success:', response);
-        //location.replace(location.origin)
         })
         //Then with the error genereted...
         .catch((error) => {
@@ -119,7 +138,7 @@ export default {
         //Then with the data from the response in JSON...
         .then((gif) => {
         console.log('Success:', gif);
-        //location.replace(location.origin)
+        location.replace(location.origin)
         })
         //Then with the error genereted...
         .catch((error) => {
@@ -151,6 +170,7 @@ export default {
 
         
         likeGif: function () { 
+        console.log('coucou')
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const id = urlParams.get('id')
@@ -159,13 +179,14 @@ export default {
         headers: {
             authorization: "Bearer " + localStorage.getItem('token'),
             'Content-Type': 'application/json',
-        }, body: {
+        }, body: JSON.stringify({
             type: 'like'
-        }
+        }) 
         })
         .then((response) => response.json())
         .then((response) => {
             console.log("Gif liké", response)
+            this.gifCreateFetch()
         })
         //Then with the error genereted...
         .catch((error) => {
@@ -177,7 +198,8 @@ export default {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const id = urlParams.get('id')
-        fetch('http://localhost:3000/api/gif/'+ id +"/reaction", {
+        const reactionId = this.getMyLikeId()
+        fetch('http://localhost:3000/api/gif/'+ id +"/reaction/" + reactionId, {
         method: 'DELETE',
         headers: {
             authorization: "Bearer " + localStorage.getItem('token'),
@@ -186,6 +208,7 @@ export default {
         .then((response) => response.json())
         .then((response) => {
             console.log("Like supprimé", response)
+            this.gifCreateFetch()
         })
         //Then with the error genereted...
         .catch((error) => {
@@ -202,13 +225,14 @@ export default {
         headers: {
             authorization: "Bearer " + localStorage.getItem('token'),
             'Content-Type': 'application/json',
-        }, body: {
+        }, body: JSON.stringify({
             type: 'dislike'
-        }
+        }) 
         })
         .then((response) => response.json())
         .then((response) => {
-            console.log("Gif liké", response)
+            console.log("Gif Disliké", response)
+            this.gifCreateFetch()
         })
         //Then with the error genereted...
         .catch((error) => {
@@ -216,11 +240,12 @@ export default {
         });
         },
 
-        DeletedislikeGif: function () { 
+        deleteDislikeGif: function () { 
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const id = urlParams.get('id')
-        fetch('http://localhost:3000/api/gif/'+ id +"/reaction", {
+        const reactionId = this.getMyDislikeId()
+        fetch('http://localhost:3000/api/gif/'+ id +"/reaction/" + reactionId, {
         method: 'DELETE',
         headers: {
             authorization: "Bearer " + localStorage.getItem('token'),
@@ -229,12 +254,29 @@ export default {
         .then((response) => response.json())
         .then((response) => {
             console.log("Like supprimé", response)
+            this.gifCreateFetch()
         })
         //Then with the error genereted...
         .catch((error) => {
         console.error('Error:', error);
         });
         },
+
+        getMyLikeId: function() {
+            for (let reaction of this.gif.reactions) {
+                if (this.userLogin == reaction.userId && reaction.type == "like") {
+                    return reaction.id
+                }
+            } 
+        },
+
+        getMyDislikeId: function() {
+            for (let reaction of this.gif.reactions) {
+                if (this.userLogin == reaction.userId && reaction.type == "dislike") {
+                    return reaction.id
+                }
+            } 
+        }
 
     }
 };
@@ -255,6 +297,43 @@ article {
     margin: 0 auto;
     padding: 20px 0px;
     z-index: 1;
+
+    .like {
+        border: 2px solid black;
+        border-radius: 30%;
+        outline: none;
+        margin: 0 20px;
+        font-size: 1.3em;
+        background-color: lighten($color: #C6E5D9, $amount: 8%);
+        &:hover {
+            color: #3FB8AF;
+            cursor: pointer;
+            border-color: #3FB8AF;
+        }
+        &.active {
+            color: #3FB8AF;
+            cursor: pointer;
+            border-color: #3FB8AF;
+        }
+    }
+    .dislike {
+        border: 2px solid black;
+        border-radius: 30%;
+        outline: none;
+        margin: 0 20px;
+        font-size: 1.3em;
+        background-color: lighten($color: #C6E5D9, $amount: 8%);
+        &:hover {
+            color: #FF3D7F;
+            cursor: pointer;
+            border-color: #FF3D7F;
+        }
+        &.active {
+        color: #FF3D7F;
+        cursor: pointer;
+        border-color: #FF3D7F;
+        }
+    }
 }
 
 form {
