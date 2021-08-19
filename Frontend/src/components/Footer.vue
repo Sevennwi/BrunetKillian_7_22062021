@@ -44,35 +44,49 @@ export default {
 
 <style lang="scss">
 
-    footer {
-        display: flex;
-        justify-content: space-around;
-        background-color: #3FB8AF;
-        padding-bottom: 10px;
-        flex-grow: 0;
-        flex-shrink: 0;
-        z-index: 1;
-        .text-center {
-            text-align: center;
-            font-size: 1.3em;
-            color: white;
-
-        }
-        .row {
-            display: flex;
-            flex-direction: row;
-            .col-sm-3 {
-                margin: auto;
-                .social {
-                    font-size: 2em;
-                    padding: 10px 20px;
-                    color: white;
-                    &:hover {
-                            color: rgba($color: #FF3D7F, $alpha: 0.8);
-                    }
-                }
-            }
-        }
+@mixin tablet {
+    @media all and (max-width: 700px) {
+        @content;
     }
+}
+
+footer {
+     display: flex;
+     justify-content: space-around;
+     background-color: #3FB8AF;
+     padding-bottom: 30px;
+     flex-grow: 0;
+     flex-shrink: 0;
+     z-index: 1;
+     .text-center {
+          text-align: center;
+          font-size: 1.3em;
+          color: white;
+
+     }
+     .row {
+          display: flex;
+          flex-direction: row;
+
+          @include tablet {
+               flex-direction: column;
+          }
+          .col-sm-3 {
+               margin: auto;
+
+               @include tablet {
+               padding: 10px 0px;
+               }
+               .social {
+               font-size: 2em;
+               padding: 10px 20px;
+               color: white;
+               &:hover {
+                         color: rgba($color: #FF3D7F, $alpha: 0.8);
+                    }
+               }
+          }
+     }
+}
 
 </style>

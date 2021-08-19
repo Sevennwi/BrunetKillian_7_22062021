@@ -28,6 +28,12 @@ export default {
     display: none;
 }
 
+@mixin tablet {
+    @media all and (max-width: 700px) {
+        @content;
+    }
+}
+
 header {
     background-color: rgba($color: #3FB8AF, $alpha: 1);
     display: flex;
@@ -38,6 +44,10 @@ header {
     flex-grow: 0;
     flex-shrink: 0;
     z-index: 1;
+
+    @include tablet {
+        padding: 0px 20px;
+    }
 }
 
 
@@ -46,6 +56,10 @@ ul{
     display: flex;
     flex-direction: row;
 
+    @include tablet {
+        flex-direction: column;
+    }
+
 }
 
 li {
@@ -53,6 +67,10 @@ li {
     vertical-align: middle;
     font-weight: bold;
     font-size: 1.2em;
+
+        @include tablet {
+        padding: 15px 0px;
+    }
 
     a {
         color: white;
@@ -65,7 +83,7 @@ li {
 
 
 img {
-    width: 200px;
+    width: 150px;
     height: auto;
 }
 

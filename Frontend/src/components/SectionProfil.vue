@@ -95,6 +95,12 @@ export default {
 
 <style lang="scss">
 
+@mixin tablet {
+    @media all and (max-width: 700px) {
+        @content;
+    }
+}
+
 section {
     flex-grow: 1;
     flex-shrink: 0;
@@ -106,6 +112,10 @@ article {
     margin: 0 auto;
     padding: 20px 0px;
     z-index: 1;
+
+    @include tablet {
+        width: 80%;
+    }
 }
 
 form {
@@ -123,6 +133,7 @@ form {
             margin: 10px;
         }
         input {
+            max-width: 80%;
             margin: auto;
             border: none;
             outline: none;
@@ -152,10 +163,14 @@ form {
     display: flex;
     flex-direction: row;
     justify-content: center;
+
+    @include tablet {
+        flex-direction: column;
+    }
     .btn {
        	border: none;
         outline: none;
-        display: flex;
+        display: block;
         border: 1px solid #333;
         border-radius: 10px;
         margin: 60px 30px 0px;
@@ -163,6 +178,10 @@ form {
         cursor: pointer;
         font-size: 20px;
         transition: background-color 0.3s ease-in-out;
+
+        @include tablet {
+            margin: 40px auto;
+            }
         &:hover {
             background-color: #FF3D7F;
             color: white;

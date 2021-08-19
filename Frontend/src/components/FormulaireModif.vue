@@ -2,8 +2,7 @@
     <section>
         <article>
 
-            <div v-if="gif" class="card">
-                <router-link to="/gif-modification" class="cardBody">
+            <div v-if="gif" class="cardModif">
                     <div class="userName">
                         <p>{{gif.user.email}}</p>
                     </div>
@@ -13,18 +12,33 @@
                         <p>{{gif.description}}</p>
                     </div>
 
-                </router-link>
-
-
-                <div>  <!-- Faire 4 boutons create destroy-->
-                    <button v-if="!hasLiked" @click.prevent.stop="likeGif()" class="like"><i class="fas fa-arrow-up"></i></button>
+                <!-- Like-->
+                <div>
+                    <button v-if="!hasLiked" @click.prevent.stop="likeGif()" class="like"><i class="fas fa-arrow-up"></i></button> <span v-if="getMyLikeNumber()"> yo </span>
                     <button v-if="hasLiked" @click.prevent.stop="deleteLikeGif()" class="like active"><i class="fas fa-arrow-up"></i></button>
-                    <button v-if="!hasDisliked" @click.prevent.stop="dislikeGif()" class="dislike"><i class="fas fa-arrow-down"></i></button>
+                    <button v-if="!hasDisliked" @click.prevent.stop="dislikeGif()" class="dislike"><i class="fas fa-arrow-down"></i></button> <span v-if="getMyLikeNumber()"> yo </span>
                     <button v-if="hasDisliked" @click.prevent.stop="deleteDislikeGif()" class="dislike active"><i class="fas fa-arrow-down"></i></button>
                 </div>
+
             </div>
 
-             <!-- Faire la carte v-if ici pour modif et suppression-->
+            <!-- Commentaire-->
+            <div v-if="gif" class="commentaire">
+                <h2>Espace Commentaire</h2>
+                <div v-for="commentaire in gif.commentaires" :key="commentaire.id" class="cardComment">
+                    <div class="userNameComment">
+                        <p>{{commentaire.userId}}</p>
+                    </div>
+                    <div class="comment">
+                        <p>{{commentaire.commentaire}}</p>
+                        <button v-if=" gif && commentaire.userId == userLogin" @click.prevent.stop="deleteComment()" class="commentDelete"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+                <input type="text" id="Commentaire" v-model="comment.commentaire" placeholder="Votre super commentaire" pattern="[a-zA-Z0-9- ]+" maxlength="150">
+                <button @click.prevent.stop="sendComment()" type="submit" class="btn">Envoyer</button>
+            </div>
+
+             <!-- Modifier Gif-->
             <div v-if=" gif && gif.userId == userLogin">
                 <form @submit="gifModifFetch()" onsubmit="return false">
                     <p>Modificateur de Gif</p>
@@ -64,6 +78,9 @@ export default {
         return {
             gif: null,
             userLogin: localStorage.getItem('userId'),
+            comment: {
+                commentaire: null
+            }
         }
     },
 
@@ -88,7 +105,8 @@ export default {
                 }
             } 
             return false
-        }
+        },
+
     },
 
    methods: {
@@ -270,13 +288,72 @@ export default {
             } 
         },
 
+        getMyLikeNumber: function() {
+            for (let reaction of this.gif.reactions) {
+                    return reaction.type
+            } 
+        },
+
         getMyDislikeId: function() {
             for (let reaction of this.gif.reactions) {
                 if (this.userLogin == reaction.userId && reaction.type == "dislike") {
                     return reaction.id
                 }
             } 
-        }
+        },
+
+        getCommentId: function() {
+            for (let comment of this.gif.commentaires) {
+                if (this.userLogin == comment.userId) {
+                    return comment.id
+                }
+            } 
+        },
+
+        sendComment: function () { 
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const id = urlParams.get('id')
+        fetch('http://localhost:3000/api/gif/'+ id +"/commentaire", {
+        method: 'POST',
+        headers: {
+            authorization: "Bearer " + localStorage.getItem('token'),
+            'Content-Type': 'application/json',
+        }, 
+        body: JSON.stringify(this.comment)
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            console.log("Commentaire créé", response)
+            this.gifCreateFetch()
+        })
+        //Then with the error genereted...
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+        },
+
+        deleteComment: function () { 
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const id = urlParams.get('id')
+        const commentId = this.getCommentId()
+        fetch('http://localhost:3000/api/gif/'+ id +"/commentaire/" + commentId, {
+        method: 'DELETE',
+        headers: {
+            authorization: "Bearer " + localStorage.getItem('token'),
+            'Content-Type': 'application/json',
+        }})
+        .then((response) => response.json())
+        .then((response) => {
+            console.log("Commentaire supprimé", response)
+            this.gifCreateFetch()
+        })
+        //Then with the error genereted...
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+        },
 
     }
 };
@@ -285,6 +362,13 @@ export default {
 </script>
 
 <style lang="scss">
+
+
+@mixin tablet {
+    @media all and (max-width: 700px) {
+        @content;
+    }
+}
 
 section {
     flex-grow: 1;
@@ -297,6 +381,46 @@ article {
     margin: 0 auto;
     padding: 20px 0px;
     z-index: 1;
+
+    @include tablet {
+        width: 80%;
+    }
+
+    .cardModif {
+    display: block;
+    text-align: center;
+    width: 50%;
+    margin: 0 auto 60px;
+    padding: 5px 0px 10px;
+    background-color: lighten($color: #C6E5D9, $amount: 8%);
+    border-radius: 5%;
+    text-decoration: none;
+    color: black;
+        
+        @include tablet {
+            width: 80%;
+        }
+
+        .userName {
+        text-align: left;
+        margin: 0px 10px -15px;
+        color: grey;
+        font-size: 0.8em;
+        }
+
+        .gif {
+        margin: 0px 0px 10px;
+            h2 {
+                font-size: 1.3em;
+            }
+            img {
+                max-width: 90%;
+                height: auto;
+                border-radius: 2%;
+            }
+        }
+
+    }
 
     .like {
         border: 2px solid black;
@@ -334,6 +458,76 @@ article {
         border-color: #FF3D7F;
         }
     }
+
+    .commentaire {
+        display: flex;
+        flex-direction: column;
+        h2 {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin: 10px auto 20px;
+        }
+
+        .cardComment {
+            width: 50%;
+            margin: 10px auto;
+            border-radius: 5%;
+            background-color: lighten($color: #C6E5D9, $amount: 8%);
+
+            @include tablet {
+                width: 80%;
+            }
+
+            .userNameComment {
+                color: grey;
+                margin: 0px 10px;
+            }
+            .comment {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin: 0px 10px;
+                .commentDelete {
+                    border: none;
+                    outline: none;
+                    margin: 0px 0px 0px 20px;
+                    font-size: 1.2em;
+                    color: grey;
+                    background-color: lighten($color: #C6E5D9, $amount: 8%);
+                    &:hover {
+                        color: #FF3D7F;
+                        cursor: pointer;
+                        border-color: #FF3D7F;
+                    }
+                }
+            }
+        }
+        input {
+            max-width: 80%;
+            margin: 10px auto;
+            border: none;
+            outline: none;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .btn {
+       	border: none;
+        outline: none;
+        border: 1px solid #333;
+        border-radius: 10px;
+        margin: 10px auto 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 15px;
+        transition: background-color 0.3s ease-in-out;
+        &:hover {
+            background-color: #FF3D7F;
+            color: white;
+            }
+        }
+    }
 }
 
 form {
@@ -351,6 +545,7 @@ form {
             margin: 10px;
         }
         input {
+            max-width: 80%;
             margin: auto;
             border: none;
             outline: none;

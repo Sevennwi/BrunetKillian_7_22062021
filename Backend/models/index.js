@@ -24,6 +24,7 @@ db.sequelize = sequelize;
 db.User = require("./User.js")(sequelize, Sequelize);
 db.Gif = require("./Gif.js")(sequelize, Sequelize);
 db.Reaction = require("./Reaction.js")(sequelize, Sequelize);
+db.Commentaire = require("./Commentaire.js")(sequelize, Sequelize);
 
 db.User.hasMany(db.Gif)
 db.Gif.belongsTo(db.User)
@@ -31,8 +32,14 @@ db.Gif.belongsTo(db.User)
 db.User.hasMany(db.Reaction)
 db.Reaction.belongsTo(db.User)
 
+db.User.hasMany(db.Commentaire)
+db.Commentaire.belongsTo(db.User)
+
 db.Gif.hasMany(db.Reaction)
 db.Reaction.belongsTo(db.Gif)
+
+db.Gif.hasMany(db.Commentaire)
+db.Commentaire.belongsTo(db.Gif)
 
 
 

@@ -31,7 +31,7 @@ exports.createGif = (req, res, next) => {
 };
 
 exports.getOneGif = (req, res, next) => {
-  Models.Gif.findOne({ include: [ {model:Models.Reaction}, {model:Models.User, attributes: ['email']} ], where: {
+  Models.Gif.findOne({ include: [ {model:Models.Reaction}, {model:Models.Commentaire}, {model:Models.User, attributes: ['email']} ], where: {
     id: req.params.id }
   }).then(
     (gif) => {
@@ -86,7 +86,7 @@ exports.deleteGif = (req, res, next) => {
 };
 
 exports.getAllGifs = (req, res, next) => {
-  Models.Gif.findAll({ include: [ {model:Models.Reaction}, {model:Models.User, attributes: ['email']} ] }).then(
+  Models.Gif.findAll({ include: [ {model:Models.Reaction}, {model:Models.Commentaire}, {model:Models.User, attributes: ['email']} ] }).then(
     (gifs) => {
       res.status(200).json(gifs);
     }

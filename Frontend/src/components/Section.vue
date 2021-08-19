@@ -49,7 +49,6 @@ export default {
         .then((response) => response.json())
         .then((response) => {
             this.Gifs = response
-            //const gifId = this.Gifs.id
             //console.log(response)
         })
         //Then with the error genereted...
@@ -65,6 +64,12 @@ export default {
 
 <style lang="scss">
 
+@mixin tablet {
+    @media all and (max-width: 700px) {
+        @content;
+    }
+}
+
 section {
   display: flex;
   flex-grow: 1;
@@ -77,6 +82,10 @@ article {
     margin: 0 auto;
     padding: 20px 0px;
     z-index: 1;
+
+    @include tablet {
+        width: 80%;
+    }
     .empty {
         display: flex;
         flex-direction: column;
@@ -93,11 +102,15 @@ article {
     .card {
         display: block;
         text-align: center;
-        width: 40%;
+        width: 50%;
         margin: 0 auto 60px;
         padding: 5px 0px 10px;
         background-color: lighten($color: #C6E5D9, $amount: 8%);
         border-radius: 5%;
+
+        @include tablet {
+            width: 80%;
+        }
 
         .cardBody {
         text-decoration: none;
