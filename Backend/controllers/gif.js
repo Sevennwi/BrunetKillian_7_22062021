@@ -31,8 +31,18 @@ exports.createGif = (req, res, next) => {
 };
 
 exports.getOneGif = (req, res, next) => {
-  Models.Gif.findOne({ include: [ {model:Models.Reaction}, {model:Models.Commentaire}, {model:Models.User, attributes: ['email']} ], where: {
-    id: req.params.id }
+  Models.Gif.findOne({ 
+    include: [ 
+      {model:Models.Reaction},
+      {  
+        model:Models.Commentaire,
+        include: [{model:Models.User, attributes: ['email']}]
+      },
+      {model:Models.User, attributes: ['email']} 
+    ], 
+    where: {
+      id: req.params.id 
+    }
   }).then(
     (gif) => {
       res.status(200).json(gif);
@@ -46,7 +56,17 @@ exports.getOneGif = (req, res, next) => {
   );
 };
 
-exports.modifyGif = (req, res, next) => {
+exports.modifyGif = async (req, res, next) => {
+  const token = req.headers.authorization.split('  ')[1];
+  const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+  const userId = decodedToken.userId;
+  const isAdmin = decodedToken.isAdmin;
+
+  const gifToUpdate = await models.Gif.findOne({ where: { id: req.params.id } });
+
+  if (!isAdmin && (gifToUpdate.userId !== userId)) {
+    return res.status(201).json({error: 'Vous n\'avez pas le droit de modifier cette resource'})
+  }
   const gifData = req.file
   ? {
       ...JSON.parse(req.body.gif),
@@ -71,7 +91,17 @@ exports.modifyGif = (req, res, next) => {
   );
 };
 
-exports.deleteGif = (req, res, next) => {
+exports.deleteGif = async (req, res, next) => {
+  const token = req.headers.authorization.split('  ')[1];
+  const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+  const userId = decodedToken.userId;
+  const isAdmin = decodedToken.isAdmin;
+
+  const gifToDelete = await models.Gif.findOne({ where: { id: req.params.id } });
+
+  if (!isAdmin && (gifToDelete.userId !== userId)) {
+    return res.status(201).json({error: 'Vous n\'avez pas le droit de modifier cette resource'})
+  }
   Models.Gif.findOne({ where: {id: req.params.id }})
     .then(gif => {
       console.log(gif)

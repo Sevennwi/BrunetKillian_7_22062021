@@ -54,6 +54,7 @@ export default {
         if (response.token !== undefined) {
                 localStorage.setItem('token', response.token)
                 localStorage.setItem('userId', response.userId)
+                localStorage.setItem('isAdmin', response.isAdmin)
                 location.replace(location.origin)
                 console.log('Success:', response);
         }

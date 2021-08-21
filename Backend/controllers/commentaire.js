@@ -7,10 +7,8 @@ exports.createCommentaireGif = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
-    const userName = decodedToken.email;
     Models.Commentaire.create({
       userId,
-      userName,
       gifId: req.params.id,
       commentaire: req.body.commentaire
     })
