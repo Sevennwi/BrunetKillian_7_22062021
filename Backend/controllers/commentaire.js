@@ -5,6 +5,7 @@ exports.createCommentaireGif = (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
   const userId = decodedToken.userId;
+
   Models.Commentaire.create({
     userId,
     gifId: req.params.id,
@@ -22,13 +23,7 @@ exports.deleteCommentaireGif = (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
   const userId = decodedToken.userId;
-  const isAdmin = decodedToken.isAdmin;
 
-  if (!isAdmin && gifToDelete.userId !== userId) {
-    return res.status(201).json({
-      error: "Vous n'avez pas le droit de modifier cette resource",
-    });
-  }
   Models.Commentaire.destroy({
     where: {
       id: req.params.commentaireId,
