@@ -12,6 +12,7 @@ module.exports = {
   extends: ['plugin:vue/essential', 'airbnb-base'],
   plugins: ['prettier'],
   // add your custom rules here
+  
   rules: {},
   settings: {
     'import/resolver': {
@@ -20,6 +21,7 @@ module.exports = {
         map: [
           ['~', path.resolve(__dirname, './')],
           ['@', path.resolve(__dirname, './')],
+          ['src', path.resolve(__dirname, './')],
         ],
       },
     },

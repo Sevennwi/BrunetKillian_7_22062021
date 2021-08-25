@@ -1,9 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
-    const Commentaire = sequelize.define("commentaire", {
+  const Commentaire = sequelize.define("commentaire", {
     commentaire: {
-      type: Sequelize.STRING
-    }
-    });
-  
-    return Commentaire;
-  };
+      type: Sequelize.STRING,
+    },
+  });
+
+  return Commentaire;
+};

@@ -13,7 +13,12 @@
 
         <!-- Like-->
         <div>
-          <button v-if="!hasLiked" @click.prevent.stop="likeGif()" class="like" :disabled="hasDisliked">
+          <button
+            v-if="!hasLiked"
+            @click.prevent.stop="likeGif()"
+            class="like"
+            :disabled="hasDisliked"
+          >
             <i class="fas fa-arrow-up"></i>
           </button>
           <button
@@ -47,7 +52,7 @@
 
       <!-- Commentaire-->
       <div v-if="gif" class="commentaire">
-        <h2>Espace Commentaire</h2>
+        <h2 class="h2Comment">Espace Commentaire</h2>
         <div
           v-for="commentaire in gif.commentaires"
           :key="commentaire.id"
@@ -112,12 +117,16 @@
           </div>
 
           <div>
-            <button type="submit" class="btn">Modification</button>
+            <button type="submit" class="btnModif">Modification</button>
           </div>
         </form>
 
         <div class="delete">
-          <button @click="gifDeleteFetch()" class="btn" onsubmit="return false">
+          <button
+            @click="gifDeleteFetch()"
+            class="btnDelete"
+            onsubmit="return false"
+          >
             Suppresion du Gif
           </button>
         </div>
@@ -166,11 +175,14 @@ export default {
     },
 
     likeNumber() {
-      return this.gif.reactions.filter((reaction) => reaction.type === 'like').length;
+      return this.gif.reactions.filter((reaction) => reaction.type === 'like')
+        .length;
     },
 
     dislikeNumber() {
-      return this.gif.reactions.filter((reaction) => reaction.type === 'dislike').length;
+      return this.gif.reactions.filter(
+        (reaction) => reaction.type === 'dislike',
+      ).length;
     },
   },
 
@@ -501,6 +513,10 @@ article {
       cursor: pointer;
       border-color: #3fb8af;
     }
+    &:disabled {
+      color: gray;
+      border-color: gray;
+    }
     &.active {
       color: #3fb8af;
       cursor: pointer;
@@ -519,6 +535,10 @@ article {
       cursor: pointer;
       border-color: #ff3d7f;
     }
+    &:disabled {
+      color: gray;
+      border-color: gray;
+    }
     &.active {
       color: #ff3d7f;
       cursor: pointer;
@@ -529,7 +549,7 @@ article {
   .commentaire {
     display: flex;
     flex-direction: column;
-    h2 {
+    .h2Comment {
       font-size: 1.4em;
       font-weight: bold;
       margin: 10px auto 20px;
@@ -618,7 +638,7 @@ form {
       padding: 5px 10px;
     }
   }
-  .btn {
+  .btnModif {
     outline: none;
     border: 1px solid #333;
     border-radius: 10px;
@@ -636,7 +656,7 @@ form {
 
 .delete {
   display: flex;
-  .btn {
+  .btnDelete {
     outline: none;
     border: 1px solid #333;
     border-radius: 10px;
