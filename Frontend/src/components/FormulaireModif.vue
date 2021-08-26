@@ -11,7 +11,7 @@
           <p>{{ gif.description }}</p>
         </div>
 
-        <!-- Like-->
+        <!-- Reaction-->
         <div>
           <button
             v-if="!hasLiked"
@@ -58,7 +58,7 @@
           :key="commentaire.id"
           class="cardComment"
         >
-          <div class="userNameComment">
+          <div v-if="commentaire.user !== null" class="userNameComment">
             <p>{{ commentaire.user.email }}</p>
           </div>
           <div class="comment">
@@ -127,7 +127,7 @@
             class="btnDelete"
             onsubmit="return false"
           >
-            Suppresion du Gif
+            Suppression du Gif
           </button>
         </div>
       </div>
