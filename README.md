@@ -10,4 +10,6 @@ Backend:
 
 Lancez la commande nodemon server dans le terminal
 
-Rajoutez le fichier .env dans le dossier backend pour se connecter à la base de donnée 
+Rajoutez le fichier .env dans le dossier backend pour se connecter à la base de donnée
+
+Rajoutez un fichier images dans le backend pour stocker les gifs 
