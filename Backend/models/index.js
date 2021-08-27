@@ -26,14 +26,14 @@ db.Gif = require("./Gif.js")(sequelize, Sequelize);
 db.Reaction = require("./Reaction.js")(sequelize, Sequelize);
 db.Commentaire = require("./Commentaire.js")(sequelize, Sequelize);
 
-db.User.hasMany(db.Gif);
-db.Gif.belongsTo(db.User);
+db.User.hasMany(db.Gif, { onDelete: "CASCADE" });
+db.Gif.belongsTo(db.User, { onDelete: "CASCADE" });
 
-db.User.hasMany(db.Reaction);
-db.Reaction.belongsTo(db.User);
+db.User.hasMany(db.Reaction, { onDelete: "CASCADE" });
+db.Reaction.belongsTo(db.User, { onDelete: "CASCADE" });
 
-db.User.hasMany(db.Commentaire);
-db.Commentaire.belongsTo(db.User);
+db.User.hasMany(db.Commentaire, { onDelete: "CASCADE" });
+db.Commentaire.belongsTo(db.User, { onDelete: "CASCADE" });
 
 db.Gif.hasMany(db.Reaction);
 db.Reaction.belongsTo(db.Gif);

@@ -58,7 +58,7 @@
           :key="commentaire.id"
           class="cardComment"
         >
-          <div v-if="commentaire.user !== null" class="userNameComment">
+          <div class="userNameComment">
             <p>{{ commentaire.user.email }}</p>
           </div>
           <div class="comment">
